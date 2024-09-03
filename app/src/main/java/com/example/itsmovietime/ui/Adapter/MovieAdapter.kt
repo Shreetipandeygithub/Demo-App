@@ -1,18 +1,15 @@
-package com.example.itsmovietime.Adapter
+package com.example.itsmovietime.ui.Adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.itsmovietime.Model.Data.Result
 import com.example.itsmovietime.R
-import com.example.itsmovietime.ui.EachMovieActivity
 
 
 class MovieAdapter(
@@ -29,12 +26,10 @@ class MovieAdapter(
         val movieTitle: TextView
         val movieImage: ImageView
         val movieOverview: TextView
-        val nextButton:AppCompatButton
         init {
             movieTitle=itemView.findViewById(R.id.txtMovieTitle)
             movieOverview=itemView.findViewById(R.id.txtMovieDescription)
             movieImage=itemView.findViewById(R.id.movieImage)
-            nextButton=itemView.findViewById(R.id.next)
         }
     }
 
@@ -58,11 +53,6 @@ class MovieAdapter(
         val posterUrl = "https://image.tmdb.org/t/p/w500" + currItem.poster_path
         Glide.with(context).load(posterUrl).into(holder.movieImage)
 
-        holder.nextButton.setOnClickListener {
-            val intent = Intent(context, EachMovieActivity::class.java)
-//            intent.putExtra("MOVIE_DETAILS", currItem)
-            context.startActivity(intent)
-        }
     }
 
 

@@ -28,7 +28,6 @@ class MovieViewModel:ViewModel() {
             override fun onFailure(call: Call<MyMovieData?>, t: Throwable) {
                 t.printStackTrace()
             }
-
         })
     }
     fun observeMovieLiveData() : LiveData<List<Result>>{

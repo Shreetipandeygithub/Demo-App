@@ -75,4 +75,10 @@ dependencies {
     //lifecycle
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+
+    implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
+//    implementation("com.github.User:Repo:Tag")
+
 }
