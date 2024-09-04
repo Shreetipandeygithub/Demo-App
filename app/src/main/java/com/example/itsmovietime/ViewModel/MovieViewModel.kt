@@ -1,36 +1,57 @@
 package com.example.itsmovietime.ViewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.itsmovietime.Model.Data.MyMovieData
+import androidx.lifecycle.viewModelScope
 import com.example.itsmovietime.Api.RetrofitHelper
 import com.example.itsmovietime.Model.Data.Result
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
-class MovieViewModel:ViewModel() {
-    private var movieLiveData = MutableLiveData<List<Result>>()
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 
-    fun getMyMovieData(){
-        val retrofitData= RetrofitHelper.retrofitBuilder
+//class MovieViewModel : ViewModel() {
+//    private val _movieStateFlow = MutableStateFlow<List<Result>>(emptyList())
+//    val movieStateFlow: StateFlow<List<Result>> = _movieStateFlow
+//
+//    fun getMyMovieData() {
+//        viewModelScope.launch {
+//            try {
+//                val response = RetrofitHelper.retrofitBuilder.execute()
+//                if (response.isSuccessful) {
+//                    response.body()?.results?.let { results ->
+//                        _movieStateFlow.value = results
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                // Handle error
+//            }
+//        }
+//    }
+//
+//    fun observeMovieLiveData(): StateFlow<List<Result>> = movieStateFlow
+//}
 
-        retrofitData.enqueue(object :Callback<MyMovieData?>{
-            override fun onResponse(call: Call<MyMovieData?>, response: Response<MyMovieData?>) {
-                val responseBody=response.body()
-                if(response.isSuccessful && responseBody!=null){
-                    movieLiveData.value=responseBody.results
+class MovieViewModel : ViewModel() {
+    private val _movieStateFlow = MutableStateFlow<List<Result>>(emptyList())
+    val movieStateFlow: StateFlow<List<Result>> = _movieStateFlow
+
+    fun getMyMovieData() {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitHelper.retrofitBuilder.execute()
+                if (response.isSuccessful) {
+                    response.body()?.results?.let { results ->
+                        _movieStateFlow.value = results
+                    }
                 }
+            } catch (e: Exception) {
+                // Handle error
             }
+        }
+    }
 
-            override fun onFailure(call: Call<MyMovieData?>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
-    }
-    fun observeMovieLiveData() : LiveData<List<Result>>{
-        return movieLiveData
-    }
+    fun observeMovieLiveData(): StateFlow<List<Result>> = movieStateFlow
 }
+
+
+
